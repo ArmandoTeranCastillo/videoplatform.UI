@@ -1,56 +1,54 @@
 <script lang="ts">
-  import { onMount } from 'svelte';
+  let videoElement: HTMLVideoElement;
 
-  let container: HTMLElement;
-  let song: HTMLAudioElement;
-  let isPlaying = false;
-  let isHolding = false;
-  let holdTimer: ReturnType<typeof setTimeout>;
+  function playVideo() {
+    videoElement.play();
+  }
 
-  onMount(() => {
-    if (typeof window === 'undefined' || !container) return;
-
-    song = new Audio('/audios/sunset.mp3');
-
-    container.addEventListener('mousedown', () => {
-      container.style.transform = 'scale(0.9)';
-      holdTimer = setTimeout(() => {
-        isHolding = true;
-        song.pause();
-        song.currentTime = 0;
-      }, 500);
-    });
-
-    container.addEventListener('mouseup', () => {
-      container.style.transform = '';
-      clearTimeout(holdTimer);
-      if (!isHolding) { // Only toggle playback if the button was not held
-        if (isPlaying) {
-          song.pause();
-        } else {
-          song.play();
-        }
-        isPlaying = !isPlaying;
-      }
-      isHolding = false; // Always reset the holding flag
-    });
-  });
+  function pauseVideo() {
+    videoElement.pause();
+  }
 </script>
 
-<div class="flex justify-center items-center h-screen bg-gray-200 container-bg">
-  <div
-    bind:this={container}
-    class="bg-gradient-to-r from-blue-400 via-purple-500 to-red-500 w-64 h-64 rounded-full flex items-center justify-center text-white text-2xl font-bold shadow-2xl transition-transform duration-150 ease-in-out cursor-pointer"
-  >
-    <span style="text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.7);">Sunset</span>
-  </div>
-</div>
-
 <style>
-  .container-bg {
-    background-image: url('/sunset.jpg');
-    background-size: cover;
-    background-position: center;
-    background-repeat: no-repeat;
+  .video-container {
+    background-color: #2b2b2b; /* Dark background color */
+    padding: 20px;
+    border-radius: 10px; /* Rounded corners */
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* Subtle shadow */
+  }
+
+  .video-controls {
+    margin-top: 10px;
+    display: flex;
+    gap: 10px; /* Space between buttons */
+  }
+
+  button {
+    padding: 10px 15px;
+    background-color: #4a4a4a; /* Dark button color */
+    color: #ffffff; /* White text color */
+    border: none;
+    border-radius: 5px; /* Rounded button corners */
+    cursor: pointer;
+    transition: background-color 0.3s ease; /* Smooth hover effect */
+  }
+
+  button:hover {
+    background-color: #6a6a6a; /* Slightly lighter color on hover */
   }
 </style>
+
+<div class="video-container">
+  <video bind:this={videoElement} width="640" height="360" controls>
+    <source src="/videos/Lost%20Boy.mp4" type="video/mp4">
+    Your browser does not support the video tag.
+  </video>
+  <div class="video-controls">
+    <button on:click={playVideo}>Play</button>
+    <button on:click={pauseVideo}>Pause</button>
+  </div>
+</div>
