@@ -43,10 +43,11 @@
 </style>
 
 <div class="video-container">
-  <video bind:this={videoElement} width="640" height="360" controls>
+<video bind:this={videoElement} width="640" height="360" controls>
     <source src="/videos/Lost%20Boy.mp4" type="video/mp4">
+    <track kind="captions" src="/path/to/captions.vtt" srclang="en" label="English">
     Your browser does not support the video tag.
-  </video>
+</video>
   <div class="video-controls">
     <button on:click={playVideo}>Play</button>
     <button on:click={pauseVideo}>Pause</button>
